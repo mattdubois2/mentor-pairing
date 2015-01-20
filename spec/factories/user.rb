@@ -3,18 +3,18 @@ FactoryGirl.define do
     first_name "User"
     sequence(:last_name) { |n| "The #{n}th" }
     sequence(:email) { |n| "user-#{n}@example.com" }
-    sequence(:twitter_handle) { |n| "@user_#{n}" }
+    sequence(:twitter_handle) { |n| "user_#{n}" }
 
     factory :mentee do
       first_name  "Mentee"
       sequence(:email) { |n| "mentee-#{n}@example.com" }
-      sequence(:twitter_handle) { |n| "@mentee-#{n}" }
+      sequence(:twitter_handle) { |n| "mentee_#{n}" }
     end
 
     factory :mentor do
       first_name  "Mentor"
       sequence(:email) { |n| "mentor-#{n}@example.com" }
-      sequence(:twitter_handle) { |n| "@mentor-#{n}" }
+      sequence(:twitter_handle) { |n| "mentor_#{n}" }
       activated true
     end
   end
