@@ -11,6 +11,8 @@ class User < ActiveRecord::Base
 
   validates_uniqueness_of :email
 
+  validates :twitter_handle, allow_blank: true, format: { with: /\A[a-zA-Z0-9_]{1,15}\z/ }
+
   before_create :create_activation_code
 
   def self.featured_mentors
