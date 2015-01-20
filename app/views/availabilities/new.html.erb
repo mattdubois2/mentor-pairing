@@ -9,13 +9,10 @@
 
 <div class="panel">
   <%= form_tag availabilities_path do %>
-    <% if @user && @user.errors %>
-      <%= @user.errors.full_messages.join(", ") %>
-    <% end %>
     <div class="field"><label>Email address</label><%= text_field_tag :email, @user ? @user.email : '' %>
       <% if @user %>
         <span class="error">
-          <%= @user.errors[:email].first %>
+          <%= @user.errors[:email].join(", ") %>
         </span>
       <% end %>
     </div>
@@ -23,7 +20,7 @@
     <div class="field"><label>Twitter handle<span class="addon">@</span></label><%= text_field_tag :twitter_handle, @user ? @user.twitter_handle : '' %>
       <% if @user %>
         <span class="error">
-          <%= @user.errors[:twitter_handle].first %>
+          <%= @user.errors[:twitter_handle].join(", ") %>
         </span>
       <% end %>
     </div>
