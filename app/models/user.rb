@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
   validates :email,
             presence: :true,
             uniqueness: :true,
-            format: { with: /\A[^@]+@([^@\.]+\.)+[^@\.]+\z/ }
+            format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i }
 
   validates :twitter_handle, allow_blank: true, format: { with: /\A[a-zA-Z0-9_]{1,15}\z/ }
 
