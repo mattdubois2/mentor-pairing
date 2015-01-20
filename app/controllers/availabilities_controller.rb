@@ -63,7 +63,7 @@ class AvailabilitiesController < ApplicationController
       user.update_attributes(user_params)
     else
       user = User.create(user_params)
-      send_activation(mentor) if user.valid?
+      send_activation(user) if user.valid?
     end
     user
   end
