@@ -5,9 +5,13 @@ class AvailabilitiesController < ApplicationController
   end
 
   def create
-    mentor = find_or_activate_by_email
-    MakesRecurringAvailabilities.new(mentor, format_start_time(availability_params)).make_availabilities
-    redirect_to availabilities_path
+    @user = find_or_activate_by_email
+    if @user.valid?
+      MakesRecurringAvailabilities.new(@user, format_start_time(availability_params)).make_availabilities
+      redirect_to availabilities_path
+    else
+      render :new
+    end
   end
 
   def index
@@ -51,8 +55,23 @@ class AvailabilitiesController < ApplicationController
     end
   end
 
-
   private
+
+  def find_or_activate_by_email
+    user = User.find_by_email(params[:email])
+    if user
+      user.update_attributes(user_params)
+    else
+      user = User.create(user_params)
+      send_activation(mentor) if user.valid?
+    end
+    user
+  end
+
+  def send_activation(user)
+    user.send_activation
+    flash[:notice] = "Please go check your email, ok?"
+  end
 
   def availability_params
     params.require(:availability).permit('start_time(1s)', 'start_time(4i)',
