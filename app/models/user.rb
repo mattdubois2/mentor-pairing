@@ -9,7 +9,10 @@ class User < ActiveRecord::Base
   has_many :given_kudos, :foreign_key => :mentee_id, :class_name => 'Kudo'
   has_many :received_feedbacks, :foreign_key => :feedback_receiver_id, :class_name => "AppointmentFeedback"
 
-  validates_uniqueness_of :email
+  validates :email,
+            presence: :true,
+            uniqueness: :true,
+            format: { with: /\A[^@]+@([^@\.]+\.)+[^@\.]+\z/ }
 
   validates :twitter_handle, allow_blank: true, format: { with: /\A[a-zA-Z0-9_]{1,15}\z/ }
 
