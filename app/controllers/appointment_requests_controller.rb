@@ -6,22 +6,24 @@ class AppointmentRequestsController < ApplicationController
 
   def create
     @availability = Availability.find_by_id(params[:availability_id])
-    mentee = User.find_by_email(params[:email])
+    @user = User.find_by_email(params[:email])
 
-    if mentee && mentee.activated?
+    if @user && @user.activated?
       flash[:notice] = "An email has been sent to #{@availability.mentor.first_name}. Once they confirm the appointment, we'll let you know."
-      AppointmentRequest.create!(:mentee => mentee, :availability => @availability)
-      mentee.send_appointment_request(@availability)
+      AppointmentRequest.create(:mentee => @user, :availability => @availability)
+      @user.send_appointment_request(@availability)
       redirect_to root_path
-      return
+    else
+      @user=User.new(user_params)
+
+      if @user.save
+        @user.send_activation
+        flash.now[:notice] = "Please go check your email, ok? Then come back and re-submit."
+        render :new
+      else
+        render :new
+      end
     end
 
-    if mentee.nil?
-      mentee = User.create!(user_params)
-    end
-
-    mentee.send_activation
-    flash.now[:notice] = "Please go check your email, ok? Then come back and re-submit."
-    render :new
   end
 end
