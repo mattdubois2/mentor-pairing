@@ -19,10 +19,8 @@ class AppointmentRequestsController < ApplicationController
       if @user.save
         @user.send_activation
         flash.now[:notice] = "Please go check your email, ok? Then come back and re-submit."
-        render :new
-      else
-        render :new
       end
+      render :new
     end
 
   end
